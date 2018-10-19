@@ -1,29 +1,29 @@
 const express = require('express'),
-      app = express();
-
+      app = express(),
+      handlebars = require('express-handlebars').create({defaultLayout: 'main'});
+    
+    app.engine('handlebars', handlebars.engine);
+    app.set('view engine', 'handlebars');
     app.set('port', process.env.PORT || 3000);
 
     app.get('/', (req, res)=>{
-        res.type('text/plain');
-        res.send('homepage');
+        
+        res.render('home');
     })
     app.get('/about', (req, res)=>{
-        res.type('text/plain');
-        res.send('/about');
+        res.render('about');
     })
     app.use((req, res)=>{
-        res.type('text/plain');
-        res.status(404);
-        res.send('404 - не найдено');
+       //nonode res.status(404);
+        res.render('404');
     })
 
     app.use((err, req, res, next)=>{
         console.error(err.stock);
-        res.type('text/plain');
-        res.status(500);
-        res.send('500 - ошибка сервера');
+       // res.status(500);
+        res.render('500');
     })
 
     app.listen(app.get('port'), ()=>{
-        console.log('Express запущен на https://localhost:' + app.get('port'))
+        console.log('Express запущен на http://localhost:' + app.get('port'))
     })
